@@ -1,0 +1,25 @@
+{
+  "name": "fyp-server",
+  "version": "1.0.0",
+  "description": "final year project server-side stuff",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "author": "wence",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongodb": "^5.5.0",
+    "mongoose": "^7.2.0",
+    "nodemon": "^2.0.22",
+    "regexp": "^1.0.0",
+    "uuid": "^9.0.0"
+  }
+}
