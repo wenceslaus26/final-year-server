@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const Project = require('./project-model')
+
 const stageSchema = new mongoose.Schema({
   stageId: {
     type: String,
@@ -7,7 +9,7 @@ const stageSchema = new mongoose.Schema({
   },
   projectId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Project',
+    ref: Project,
     required: true
   },
   stageName: {

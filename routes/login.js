@@ -18,21 +18,14 @@ router.post('/login', async (req, res) => {
   try {
     // Extract user data from request body
     const { email, password } = req.body;
-    //console.log(req.body);
   
     // Find the user in the database
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ errorMessage: 'Invalid email or password' });
+      return res.status(401).json({ errorMessage: 'Invalid email' });
     };
   
-    //console.log(user);
-  
     const hashedPasswordFromDb = user.password;
-  
-    // console.log('password hashed');
-    // console.log(userPassword);
-    // console.log(hashedPasswordFromDb);
   
     const salt = user.salt;
     const hashedUserPassword = await bcrypt.hash(password, salt);
@@ -70,8 +63,8 @@ router.post('/login', async (req, res) => {
     }
   } 
   catch (error) {
-    console.error('Error:', error); // Log the detailed error message
-    console.error('Stack trace:', error.stack); // Log the stack trace
+    console.error('Error:', error);
+    console.error('Stack trace:', error.stack);
   
     res.status(500).json({ errorMessage: 'Internal server error' });
   }

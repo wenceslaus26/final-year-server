@@ -22,7 +22,8 @@ router.post('/signup', async (req, res) => {
       lastName, 
       email, 
       role,
-      password } = req.body;
+      password
+    } = req.body;
   
     // Check if email is already taken
     const existingUser = await User.findOne({ email });
@@ -40,7 +41,6 @@ router.post('/signup', async (req, res) => {
   
     // Generate a salt asynchronously
     bcryptjs.genSalt(10, (saltError, salt) => {
-    console.log(salt);
     if (saltError) {
       console.error('Error generating salt:', saltError);
       return res.status(500).json({ errorMessage: 'Internal server error' });

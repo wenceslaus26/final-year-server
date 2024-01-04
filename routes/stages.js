@@ -6,25 +6,20 @@ const Stage = require('../models/stages-model');
 const Project = require('../models/project-model');
 const authenticateToken = require('../middleware/authMiddleware');
 
-// Create a new project
 router.post('/create', async (req, res) => {
   try {
-    const existingstage = await Stage.findOne({ stageId: req.body.stageId });
-    if (existingstage) {
-      return res.status(400).json({ error: 'Stage with the same StageId already exists' });
-    }
-
     const userEmail = req.body.stageOwner;
-    // const stageOwner = req.body.stageOwner;
 
     const project = await Project.findOne({ projectOwner: userEmail });
 
     if (!project) {
       return res.status(404).json({ error: 'Project not found for the user' });
     }
+
+    const stageID = uuidv4();
     
     const stage = new Stage({
-      stageId: uuidv4(),
+      stageId: stageID,
       projectId: project._id,
       stageName: req.body.stageName,
       stageDescription: req.body.stageDescription,
@@ -36,17 +31,27 @@ router.post('/create', async (req, res) => {
     });
 
     const savedStage = await stage.save();
+
+    // Update the stageId with the generated _id value
+    savedStage.stageId = savedStage._id.toString();
+    await savedStage.save();
+
     res.status(201).json(savedStage);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
 
+
 router.get('/fetch', authenticateToken, async (req, res) => {
   try {
     const email = req.user.email;
     const stages = await Stage.find({ stageOwner: email });
-    res.json(stages);
+    const modifiedStages = stages.map((stage) => ({
+      ...stage.toObject(),
+      stageId: stage._id
+    }));
+    res.json(modifiedStages);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
