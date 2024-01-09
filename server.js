@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
 const socketIO = require('socket.io');
+require('dotenv').config();
 
 const Message = require('./models/messages-model');
 const messageController = require('./controllers/messagesController')
@@ -50,7 +51,7 @@ const io = socketIO(server, {
 });
 
 // MongoDB connection URI
-const uri = 'mongodb://localhost:27017/final-year-project';
+const uri = process.env.db_connection;
 
 // Connect to the MongoDB database
 mongoose
